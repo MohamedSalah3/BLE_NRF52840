@@ -1,0 +1,49 @@
+#Generating source browse information for project blinky_pca10056
+
+
+#Abbreviations
+cc = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\SourceIndexer.exe
+ll = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\PbdLink.exe
+bd = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\makeBrowseData.exe
+
+
+
+#Rules
+rule index
+  depfile = $out.dep
+  command = $cc -out=$out -f $in
+rule link
+  command = $ll -M $out $in
+rule browsedata
+  command = $bd $in -output  $out
+
+
+
+#Build steps
+build main.pbi : index main.xcl
+build boards.pbi : index boards.xcl
+build system_nrf52840.pbi : index system_nrf52840.xcl
+build nrfx_atomic.pbi : index nrfx_atomic.xcl
+build app_error.pbi : index app_error.xcl
+build app_error_handler_iar.pbi : index app_error_handler_iar.xcl
+build app_error_weak.pbi : index app_error_weak.xcl
+build app_util_platform.pbi : index app_util_platform.xcl
+build nrf_assert.pbi : index nrf_assert.xcl
+build nrf_atomic.pbi : index nrf_atomic.xcl
+build nrf_balloc.pbi : index nrf_balloc.xcl
+build nrf_fprintf.pbi : index nrf_fprintf.xcl
+build nrf_fprintf_format.pbi : index nrf_fprintf_format.xcl
+build nrf_memobj.pbi : index nrf_memobj.xcl
+build nrf_ringbuf.pbi : index nrf_ringbuf.xcl
+build nrf_strerror.pbi : index nrf_strerror.xcl
+build nrf_log_frontend.pbi : index nrf_log_frontend.xcl
+build nrf_log_str_formatter.pbi : index nrf_log_str_formatter.xcl
+build blinky_pca10056_part0.pbi : link main.pbi boards.pbi system_nrf52840.pbi nrfx_atomic.pbi
+build blinky_pca10056_part1.pbi : link app_error.pbi app_error_handler_iar.pbi app_error_weak.pbi app_util_platform.pbi
+build blinky_pca10056_part2.pbi : link nrf_assert.pbi nrf_atomic.pbi nrf_balloc.pbi nrf_fprintf.pbi
+build blinky_pca10056_part3.pbi : link nrf_fprintf_format.pbi nrf_memobj.pbi nrf_ringbuf.pbi nrf_strerror.pbi
+build blinky_pca10056_part4.pbi : link nrf_log_frontend.pbi nrf_log_str_formatter.pbi
+build blinky_pca10056.pbd : link blinky_pca10056_part0.pbi blinky_pca10056_part1.pbi blinky_pca10056_part2.pbi blinky_pca10056_part3.pbi blinky_pca10056_part4.pbi
+build blinky_pca10056.pbw : browsedata blinky_pca10056.pbd
+
+
